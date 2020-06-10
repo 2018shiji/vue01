@@ -2,7 +2,7 @@
     <div>
         <b-navbar toggleable="lg" type="dark" variant="success">
             <b-container>
-                <b-navbar-brand href="#">Mealier</b-navbar-brand>
+                <b-navbar-brand href="#">Mealzers</b-navbar-brand>
                 <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
                 <b-collapse id="nav-collapse" is-nav>
                     <!-- Right aligned nav items -->
@@ -33,23 +33,17 @@
         </b-navbar>
     </div>
 </template>
-
 <script>
     export default {
-        name: "Navbar",
+        name:'Navbar',
         data() {
             return {
-                meal:''
-            };
-        },
-        methods:{
-            getMeal(){
-
+                meal: ''
             }
+        },
+        methods: {
+
+
         }
     }
 </script>
-
-<style scoped>
-
-</style>

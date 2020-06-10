@@ -1,14 +1,14 @@
 <template>
   <div>
-    <Cards />
+    <axiosuse></axiosuse>
   </div>
 </template>
 
 <script>
-import Cards from "./Cards";
+import axiosuse from "./AxiosUse";
 export default {
   name: 'HelloWorld',
-  components: {Cards},
+  components: {axiosuse},
   data(){
     return{};
   }
