@@ -204,16 +204,16 @@
 
 <style scoped>
 
-    .leftFormFile{
-        float:left;
-        width:42%;
-        position:absolute;
-    }
+    /*.leftFormFile{*/
+    /*    float:left;*/
+    /*    width:42%;*/
+    /*    position:absolute;*/
+    /*}*/
 
-    .rightTextArea{
-        float:right;
-        width:47%;
-    }
+    /*.rightTextArea{*/
+    /*    float:right;*/
+    /*    width:47%;*/
+    /*}*/
 
     /*.leftFormFileLabel{*/
     /*    float:left;*/
