@@ -1,6 +1,6 @@
 <template>
-    <b-container fluid>
-        <div>
+    <b-container class="layout">
+        <div class="headerNavbar">
             <b-navbar toggleable="lg" type="dark" variant="success">
                 <b-container>
                     <b-navbar-brand >图像识别</b-navbar-brand>
@@ -34,34 +34,37 @@
             </b-navbar>
         </div>
 
-        <div>
-            <b-button squared variant="outline-primary" press=true v-on:click="getContents('/api/getFrontTails', 'frontTail', 0)">头尾</b-button>
-            <b-button squared variant="outline-success" press='selecteds[1]' v-on:click="getContents('/api/getStatuses', 'status', 1)">关闭</b-button>
-            <b-button squared variant="outline-primary" press='selecteds[2]' v-on:click="getContents('/api/getInfos', 'info', 2)">集装箱号</b-button>
-            <b-button squared variant="outline-success" press='selecteds[3]' v-on:click="getContents('/api/getRoofInfos', 'roofInfo', 3)">顶号</b-button>
+<div class="main">
+    <div class="content">
+        <div class="leftPanel">
+            <div class="fileBox">
+                <input type="file" id="myFile" class="leftFormFile" multiple @change="handleUpload($event)">
+                <label for="myFile">Choose a file</label>
+            </div>
+            <div class="fileInfo">
+                <ul class="files">
+                    <li v-for="file in files" v-bind:key="file.name">
+                        <div class="fileName filePart">{{file.name}}</div>
+                        <div class="fileSize filePart m110">{{file.size}}</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="leftFormButtons">
+                <b-button size="sm" squared variant="outline-primary" v-on:click="getContents('/api/getFrontTails', 'frontTail')">头尾</b-button>
+                <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getStatuses', 'status')">关闭</b-button>
+                <b-button size="sm" squared variant="outline-primary" v-on:click="getContents('/api/getInfos', 'info')">集装箱号</b-button>
+                <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getRoofInfos', 'roofInfo')">顶号</b-button>
 
-            <b-button squared variant="outline-primary" press='selecteds[4]' v-on:click="getContents('/api/getFrontTailsAsync', 'frontTail', 4)">*头尾</b-button>
-            <b-button squared variant="outline-success" press='selecteds[5]' v-on:click="getContents('/api/getStatusesAsync', 'status', 5)">*关闭</b-button>
-            <b-button squared variant="outline-primary" press='selecteds[6]' v-on:click="getContents('/api/getInfosAsync', 'info', 6)">*集装箱号</b-button>
-            <b-button squared variant="outline-success" press='selecteds[7]' v-on:click="getContents('/api/getRoofInfosAsync', 'roofInfo', 7)">*顶号</b-button>
+                <b-button size="sm" squared variant="outline-primary" v-on:click="getContents('/api/getFrontTailsAsync', 'frontTail')">*头尾</b-button>
+                <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getStatusesAsync', 'status')">*关闭</b-button>
+                <b-button size="sm" squared variant="outline-primary" v-on:click="getContents('/api/getInfosAsync', 'info')">*集装箱号</b-button>
+                <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getRoofInfosAsync', 'roofInfo')">*顶号</b-button>
+            </div>
         </div>
 
-
-        <div>
-            <b-form-file
-                    v-model="file"
-                    :state="Boolean(file)"
-                    class="leftFormFile"
-                    placeholder="Choose a file or drop it here..."
-                    drop-placeholder="Drop file here...">
-            </b-form-file>
-        </div>
-
-        <div>
-
+        <div class="rightTextArea">
             <b-form-textarea
                     id="textareaRight"
-                    class="rightTextArea"
                     v-model="text"
                     placeholder="Response Content area"
                     readonly
@@ -69,17 +72,18 @@
                     rows="9"
                     max-rows="9">
             </b-form-textarea>
-
+        </div>
+    </div>
+    <div class="bottom">
+        <div>
+            <div>调用结果</div>
         </div>
 
         <div>
-            <div class="leftFormFileLabel">Selected file:{{file ? file.name: ''}}</div>
-            <div class="rightTextAreaLabel">结果展示</div>
+            <b-table sticky-header="300" striped hover :items="contents" :fields="fields"></b-table>
         </div>
-
-        <div>
-            <b-table sticky-header="500" striped hover :items="contents" :fields="fields"></b-table>
-        </div>
+    </div>
+</div>
     </b-container>
 </template>
 
@@ -90,7 +94,8 @@
         data(){
             return{
                 text:"",
-                imageUri:"C:Users.Public.Nwt.cache.recv.毛骁.识别图片",
+                files:[],
+                imageUri:"C:Users\\Public\\Nwt\\cache\\recv\\毛骁\\识别图片base64Test",
                 contents:[],
                 fields:[],
                 options:[],
@@ -163,13 +168,46 @@
                 ]
 
             },
-            getContents(url, type, num){
+            getContents(url, type){
+                // axios
+                //     .get(url + "?imageUri=" + encodeURI(this.imageUri))
+                //     .then(response => {
+                //         this.contents = response.data;
+                //         console.log("--------------" + this.contents);
+                //         console.log("++++++++++++++" + this.contents.length + url);
+                //         switch(type){
+                //             case 'frontTail':
+                //                 this.formatFrontTailOutput();
+                //                 break;
+                //             case 'status':
+                //                 this.formatStatusOutput();
+                //                 break;
+                //             case 'info':
+                //                 this.formatInfoOutput();
+                //                 break;
+                //             case 'roofInfo':
+                //                 this.formatRoofInfoOutPut();
+                //                 break;
+                //             default:break;
+                //         }
+                //     })
+                //     .catch(err => {
+                //         console.log(err);
+                //     });
+
+
+                // let config = {headers:{"Content-type":"multipart/form-data"}};
+                let param = new FormData()
+                for(let i = 0; i < this.files.length; i++) {
+                    param.append('files', this.files[i]);
+                }
                 axios
-                    .get(url + "?imageUri=" + this.imageUri)
+                    .post(url, param)
                     .then(response => {
                         this.contents = response.data;
                         console.log("++++++++++++++" + this.contents.length + url);
-                        switch(type){
+                        console.log("--------------" + this.contents);
+                        switch (type) {
                             case 'frontTail':
                                 this.formatFrontTailOutput();
                                 break;
@@ -182,20 +220,23 @@
                             case 'roofInfo':
                                 this.formatRoofInfoOutPut();
                                 break;
-                            default:break;
+                            default:
+                                break;
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                    });
-                for(let i = 0; i < this.selecteds.length; i++){
-                    this.selecteds[i] = false;
-                }
-                this.selecteds[num] = true;
+                    })
+
             },
-
-            searchImage(){
-
+            handleUpload(e){
+                let tempFiles = e.target.files;
+                let len = tempFiles.length;
+                for (let i = 0; i < len; i++) {
+                    let item = tempFiles[i];
+                    console.log(item);
+                    this.files.push(item);
+                }
             }
         }
     }
@@ -203,28 +244,61 @@
 </script>
 
 <style scoped>
+    .layout{
+        width:100%;
+        height:100%;
+        display:flex;
+        flex-direction: column;
+    }
+    .headerNavbar{
+        flex:0 0 70px;
+    }
 
-    /*.leftFormFile{*/
-    /*    float:left;*/
-    /*    width:42%;*/
-    /*    position:absolute;*/
-    /*}*/
+    .main{
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        overflow:auto;
+    }
+    .content{
+        flex:1;
+        display:flex;
+    }
+    .leftPanel{
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        overflow:auto;
+    }
+    .fileBox,
+    .fileInfo{
+        flex:1;
+        border:1px solid #ccc;
+        padding-left:16px;
+        font-size:16px;
+    }
+    .leftFormFile{
+        width: 0.1px;
+        height:0.1px;
+        flex:1;
+        overflow:hidden;
+        opacity:0;
+    }
+    .fileInfo{
+        flex:0 0 0px;
+    }
+    .leftFormButtons{
+        flex:0 0 0px;
+    }
 
-    /*.rightTextArea{*/
-    /*    float:right;*/
-    /*    width:47%;*/
-    /*}*/
+    .rightTextArea{
+        flex:1;
+        overflow:hidden;
+    }
 
-    /*.leftFormFileLabel{*/
-    /*    float:left;*/
-    /*    width:42%;*/
-    /*    position:absolute;*/
-    /*}*/
-
-    /*.rightTextAreaLabel{*/
-    /*    float:right;*/
-    /*    width:47%;*/
-    /*}*/
+    .bottom{
+        flex:0 0 100px
+    }
 
 
 </style>
