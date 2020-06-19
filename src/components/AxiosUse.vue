@@ -42,10 +42,9 @@
                 <label for="myFile">Choose a file</label>
             </div>
             <div class="fileInfo">
-                <ul class="files">
+                <ul >
                     <li v-for="file in files" v-bind:key="file.name">
                         <div class="fileName filePart">{{file.name}}</div>
-                        <div class="fileSize filePart m110">{{file.size}}</div>
                     </li>
                 </ul>
             </div>
@@ -59,6 +58,7 @@
                 <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getStatusesAsync', 'status')">*关闭</b-button>
                 <b-button size="sm" squared variant="outline-primary" v-on:click="getContents('/api/getInfosAsync', 'info')">*集装箱号</b-button>
                 <b-button size="sm" squared variant="outline-success" v-on:click="getContents('/api/getRoofInfosAsync', 'roofInfo')">*顶号</b-button>
+                <b-button size="sm" squared variant="outline-success" v-on:click="refresh()">清空内容</b-button>
             </div>
         </div>
 
@@ -228,6 +228,9 @@
                         console.log(err);
                     })
 
+            },
+            refresh(){
+                window.location.reload();
             },
             handleUpload(e){
                 let tempFiles = e.target.files;
